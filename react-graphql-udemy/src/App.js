@@ -1,25 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import { ApolloProvider } from "react-apollo";
+import { Query } from "react-apollo";
+import client from "./client";
+import { ME } from "./graphql";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  render() {
+    return (
+      <ApolloProvider client={client}>
+        <div>hello</div>
+
+        <Query query={ME}>
+          {({ loading, error, data }) => {
+            if (loading) return "loading...";
+            if (error) return `error ${error.message}`;
+
+            return <div>{data.user.name}</div>;
+          }}
+        </Query>
+      </ApolloProvider>
+    );
+  }
 }
-
 export default App;
